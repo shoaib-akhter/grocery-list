@@ -1,7 +1,7 @@
-// App.js
-import React, { useState } from 'react'; // Import useState hook
-import Header from './components/Header'; // Import Header component
-import AddItem from './components/AddItem'; // Import AddItem component
+import React, { useState } from 'react';
+import Header from './components/Header';
+import AddItem from './components/AddItem';
+import ItemList from './components/ItemList'; // Import ItemList component
 
 function App() {
   // State to manage the list of items
@@ -14,8 +14,19 @@ function App() {
       text, // Item text
       purchased: false // Initial state (not purchased)
     };
-    // Update the items array with the new item
-    setItems([...items, newItem]);
+    setItems([...items, newItem]); // Add new item to the list
+  };
+
+  // Function to toggle purchased status
+  const togglePurchased = (id) => {
+    setItems(items.map(item =>
+      item.id === id ? { ...item, purchased: !item.purchased } : item
+    ));
+  };
+
+  // Function to delete an item
+  const deleteItem = (id) => {
+    setItems(items.filter(item => item.id !== id)); // Remove item from the list
   };
 
   return (
@@ -24,6 +35,12 @@ function App() {
       <Header />
       {/* Render the AddItem component and pass the addItem function as a prop */}
       <AddItem addItem={addItem} />
+      {/* Render the ItemList component and pass necessary props */}
+      <ItemList
+        items={items}
+        togglePurchased={togglePurchased}
+        deleteItem={deleteItem}
+      />
     </div>
   );
 }
